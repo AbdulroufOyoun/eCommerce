@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
@@ -56,5 +57,22 @@ class Admin extends Authenticatable
     public function Admin(): BelongsTo
     {
         return $this->belongsTo(Admin::class, 'created_by');
+    }
+
+    /** @noinspection PhpUnused */
+    public function Categories(): HasMany
+    {
+        return $this->hasMany(Category::class, 'admin_id');
+    }
+
+    /** @noinspection PhpUnused */
+    public function BinderyAttributes(): HasMany
+    {
+        return $this->hasMany(BinderyAttribute::class, 'admin_id');
+    }
+
+    public function NormalAttributes(): HasMany
+    {
+        return $this->hasMany(NormalAttribute::class, 'admin_id');
     }
 }
