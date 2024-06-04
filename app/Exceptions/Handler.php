@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
 use Spatie\Permission\Exceptions\UnauthorizedException;
@@ -71,6 +72,10 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (\Error $exception) {
+            return \response()->json(['success' => false, 'message' => $exception->getMessage(), 'code' => 500], 500);
+        });
+
+        $this->renderable(function (QueryException $exception) {
             return \response()->json(['success' => false, 'message' => $exception->getMessage(), 'code' => 500], 500);
         });
     }
