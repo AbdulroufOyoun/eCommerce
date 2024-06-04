@@ -21,4 +21,10 @@ class UserRepository implements UserRepositoryInterface
         // TODO: Implement Update() method.
         UserImage::where('user_id', $user_id)->first()->update($arr);
     }
+
+    public function UpdateFirst($model, $arr)
+    {
+        // TODO: Implement Update() method.
+        $model::first()->update($arr);
+    }
 }

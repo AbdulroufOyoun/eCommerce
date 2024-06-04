@@ -2,64 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\HomePromo\HomePromoRequest;
 use App\Models\HomePromo;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class HomePromoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct(public UserRepository $userRepository)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(HomePromo $homePromo)
+    public function show()
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(HomePromo $homePromo)
-    {
-        //
+        $promoHome = HomePromo::first();
+        if ($promoHome->video != '') {
+            $promoHome->video = url('storage/' . $promoHome->video);
+        }
+        return \SuccessData('Record loaded successfully', $promoHome);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, HomePromo $homePromo)
+    public function update(HomePromoRequest $request)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(HomePromo $homePromo)
-    {
-        //
+        $arr = Arr::only($request->validated(), ['title', 'video', 'is_video']);
+        $this->userRepository->UpdateFirst(HomePromo::class, $arr);
+        return \Success('Record Updated successfully');
     }
 }

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('home_promos', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('title');
-            $table->string('video');
+            $table->string('title')->nullable();
+            $table->string('video')->nullable();
             $table->boolean('is_video');
             $table->timestamps();
         });

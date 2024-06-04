@@ -22,7 +22,7 @@ class UserResource extends JsonResource
             'l_name' => $this->l_name,
             'company_name' => $this->company_name,
             'is_active' => $this->is_active,
-            'image' => $this->userImage->image,
+            'image' =>  url('storage/' . $this->userImage->image),
             'address' => $this->UserAddress,
         ];
     }
