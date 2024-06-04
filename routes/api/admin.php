@@ -40,4 +40,5 @@ Route::group(['middleware' => ['auth:Admin', 'scope:Admin']], function () {
     Route::get('/show_paginate_users', [UserController::class, 'show_paginate_users']);
     Route::get('/show_ContactUs', [ContactUsController::class, 'show']);
     Route::get('/delete_ContactUs/{id}', [ContactUsController::class, 'destroy']);
+    Route::get('/block_user/{id}', [UserController::class, 'block_user']);
 });

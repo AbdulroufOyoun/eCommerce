@@ -74,6 +74,12 @@ class UserController extends Controller
         return \Success('you logout from all devices');
     }
 
+    public function block_user($id)
+    {
+        $user = $this->publicRepository->ActiveOrNot(User::class, $id);
+        return \Success('Request successful');
+    }
+
 
     public function show_user($id)
     {
