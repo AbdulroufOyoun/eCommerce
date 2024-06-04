@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\HomePromoController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/login',[AdminController::class,'Login']); 
+Route::post('/login', [AdminController::class, 'Login']);
 
 Route::group(['middleware' => ['auth:Admin', 'scope:Admin']], function () {
     Route::controller(AdminController::class)->group(function () {
@@ -30,5 +34,10 @@ Route::group(['middleware' => ['auth:Admin', 'scope:Admin']], function () {
         Route::post('/logout', 'Logout');
         //Route::post('/update_password', 'ChangePassword');
     });
-});
 
+    Route::post('/update_homePromo', [HomePromoController::class, 'update']);
+    Route::post('/update_aboutUs', [AboutUsController::class, 'update']);
+    Route::get('/show_paginate_users', [UserController::class, 'show_paginate_users']);
+    Route::get('/show_ContactUs', [ContactUsController::class, 'show']);
+    Route::get('/delete_ContactUs/{id}', [ContactUsController::class, 'destroy']);
+});

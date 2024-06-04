@@ -37,11 +37,6 @@ Route::middleware(['auth:User'])->group(function () {
     Route::post('/update_profile', [UserController::class, 'update']);
 
     //
-    Route::post('/update_aboutUs', [AboutUsController::class, 'update']);
-    Route::post('/update_homePromo', [HomePromoController::class, 'update']);
-    Route::get('/show_paginate_users', [UserController::class, 'show_paginate_users']);
-    Route::get('/show_ContactUs', [ContactUsController::class, 'show']);
-    Route::get('/delete_ContactUs/{id}', [ContactUsController::class, 'destroy']);
 
     //
 
