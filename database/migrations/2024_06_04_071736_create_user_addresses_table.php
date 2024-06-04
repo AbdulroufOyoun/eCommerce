@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('user_addresses', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignUuid('state_id')->nullable()->constrained('states')->cascadeOnDelete();
             $table->string('address')->nullable();
             $table->string('zip_code')->nullable();

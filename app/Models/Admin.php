@@ -59,6 +59,7 @@ class Admin extends Authenticatable
         return $this->belongsTo(Admin::class, 'created_by');
     }
 
+
     /** @noinspection PhpUnused */
     public function Categories(): HasMany
     {
@@ -76,3 +77,6 @@ class Admin extends Authenticatable
         return $this->hasMany(NormalAttribute::class, 'admin_id');
     }
 }
+
+
+

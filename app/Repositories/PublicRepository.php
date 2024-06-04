@@ -43,8 +43,4 @@ class PublicRepository implements PublicRepositoryInterface
         // TODO: Implement DeleteById() method.
         return $model::find($id)->delete();
     }
-
-
-
-
 }

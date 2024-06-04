@@ -19,6 +19,6 @@ class AdminSeeder extends Seeder
             'password' => 'password',
         ]);
 
-        $admin->givePermissionTo(['User Management','Admin Management']);
+        $admin->givePermissionTo(['User Management','Admin Management','Quotes Management']);
     }
 }
