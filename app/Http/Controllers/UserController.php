@@ -70,7 +70,6 @@ class UserController extends Controller
     public function logout()
     {
         $user = \Auth::user();
-        // $user->tokens()->delete();
         $user->tokens()->where('scopes', '["User"]')->delete();
         return \Success('you logout from all devices');
     }
@@ -81,6 +80,15 @@ class UserController extends Controller
         $user = $this->publicRepository->ShowById(User::class, $id);
         return \SuccessData('User has loaded successful', new UserResource($user));
     }
+
+    public function show_paginate_users()
+    {
+        $perPage = \returnPerPage();
+        $user = $this->publicRepository->ShowAll(User::class, [])->paginate($perPage);
+        UserResource::collection($user);
+        return \Pagination($user);
+    }
+
 
     /**
      * Update the specified resource in storage.

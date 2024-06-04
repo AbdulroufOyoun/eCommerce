@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\ContactUs;
 use App\Models\HomePromo;
 use Illuminate\Database\Seeder;
 
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call(AboutUsSeeder::class);
         $this->call(HomePromoSeeder::class);
+        $this->call(ContactUsSeeder::class);
 
         $this->call(StateSeeder::class);
         $this->call(UserSeeder::class);

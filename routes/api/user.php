@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\AboutUsController;
+use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\HomePromoController;
 use App\Http\Controllers\UserController;
+use App\Models\ContactUs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +28,7 @@ Route::get('/show_aboutUs', [AboutUsController::class, 'show']);
 
 Route::get('/show_homePromo', [HomePromoController::class, 'show']);
 
+Route::post('/add_contactUs', [ContactUsController::class, 'create']);
 
 
 Route::middleware(['auth:User'])->group(function () {
@@ -36,6 +39,10 @@ Route::middleware(['auth:User'])->group(function () {
     //
     Route::post('/update_aboutUs', [AboutUsController::class, 'update']);
     Route::post('/update_homePromo', [HomePromoController::class, 'update']);
+    Route::get('/show_paginate_users', [UserController::class, 'show_paginate_users']);
+    Route::get('/show_ContactUs', [ContactUsController::class, 'show']);
+    Route::get('/delete_ContactUs/{id}', [ContactUsController::class, 'destroy']);
+
     //
 
 });
