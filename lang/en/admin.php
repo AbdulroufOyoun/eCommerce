@@ -13,9 +13,12 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'password' => 'The provided password is incorrect.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-    'Login' => 'Login Successfully',
-    'Logout' => 'Logged out Successfully',
+    'deleted' => 'Admin Deleted Successfully',
+    'admins_found' => 'Admin Retrived Successfully',
+    'admin_status' => 'Admin Status Changed Successfully',
+    'admin_found' => 'Admin Found Successfully',
+    'admin_permissions' => 'Admin Permissions Retrived Successfully',
+    'update_permissions' => 'Admin Permissions Updated Successfully',
+    'admin_update' => 'Admin Information Updated Successfully',
+    
 ];

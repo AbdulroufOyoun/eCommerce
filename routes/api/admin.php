@@ -15,4 +15,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/login',[AdminController::class,'Login']);
+Route::post('/login',[AdminController::class,'Login']); 
+
+Route::group(['middleware' => ['auth:Admin', 'scope:Admin']], function () {
+    Route::controller(AdminController::class)->group(function () {
+        Route::post('/add_admin', 'Create');
+        Route::delete('/delete_admin', 'DeleteById');
+        Route::post('/active_or_not_admin', 'ActiveOrNot');
+        Route::get('/show_one_admin', 'ShowById');
+        Route::get('/show_admin_permissions', 'ShowAdminPermissions');
+        Route::post('/update_admin_permissions', 'UpdateAdminPermissions');
+        Route::get('/show_admins', 'ShowAll');
+        Route::post('/update_admin', 'Update');
+        Route::post('/logout', 'Logout');
+        //Route::post('/update_password', 'ChangePassword');
+    });
+});
+
