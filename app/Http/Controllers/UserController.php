@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Enum\AccountTypeEnum;
 use App\Http\Requests\User\UserLoginRequest;
 use App\Http\Requests\User\UserSignUpRequest;
+use App\Http\Requests\User\UserUpdateRequest;
 use App\Http\Resources\Auth\LoginResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use App\Models\UserAddress;
 use App\Models\UserImage;
 use App\Repositories\PublicRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
@@ -18,7 +20,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function __construct(public PublicRepository $publicRepository)
+    public function __construct(public PublicRepository $publicRepository, public UserRepository $userRepository)
     {
     }
 
@@ -73,10 +75,6 @@ class UserController extends Controller
         return \Success('you logout from all devices');
     }
 
-    public function show_users_pagination()
-    {
-        //
-    }
 
     public function show_user($id)
     {
@@ -85,52 +83,36 @@ class UserController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UserUpdateRequest $request)
     {
-        //
+        $arr = Arr::only($request->validated(), [
+            'f_name', 'l_name', 'company_name',
+            'phone', 'display_name'
+        ]);
+        $addressArr = Arr::only($request->validated(), [
+            'state_id', 'address', 'zip_code'
+        ]);
+        $imageArr = Arr::only($request->validated(), ['image']);
+
+        if (5 === count($arr)) {
+            $this->publicRepository->update(User::class, \Auth::id(), $arr);
+        }
+        if (3 === count($addressArr)) {
+            $this->userRepository->UpdateAddress(\Auth::id(), $addressArr);
+        }
+        if (1 === count($imageArr)) {
+            $path = 'Images/Profiles/';
+
+            $imagePath = uploadImage($imageArr["image"], $path);
+            $this->userRepository->Image($imagePath, \Auth::id());
+        }
+
+        return \Success('Account has Updated successfully');
+
     }
+
 
     /**
      * Remove the specified resource from storage.

@@ -22,6 +22,8 @@ Route::get('/user/{id}', [UserController::class, 'show_user']);
 Route::middleware(['auth:User'])->group(function () {
     Route::get('/logout', [UserController::class, 'logout']);
     Route::get('/delete_account', [UserController::class, 'destroy']);
+    Route::post('/update_profile', [UserController::class, 'update']);
+
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
