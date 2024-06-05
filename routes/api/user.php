@@ -32,10 +32,7 @@ Route::post('/add_contactUs', [ContactUsController::class, 'create']);
 Route::middleware(['auth:User'])->group(function () {
     Route::post('/logout', [UserController::class, 'logout']);
     Route::post('/update_profile', [UserController::class, 'update']);
+    Route::post('/reset_password', [UserController::class, 'ResetPassword']);
 
-    //
-
-    //
 
 });
-

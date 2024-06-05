@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enum\AccountTypeEnum;
+use App\Http\Requests\User\ResetPasswordRequest;
 use App\Http\Requests\User\UserIdRequest;
 use App\Http\Requests\User\UserLoginRequest;
 use App\Http\Requests\User\UserSignUpRequest;
@@ -103,6 +104,24 @@ class UserController extends Controller
         return \Success(__('public.user_update'));
 
     }
+
+    public function ResetPassword(ResetPasswordRequest $request)
+    {
+        // $arr = Arr::only($request->validated(), ['oldPassword', 'newPassword']);
+        $user = \auth('User')->user();
+
+        if (!Hash::check($request->oldPassword, $user->password)) {
+            return \Success(__('auth.password'));
+        }
+
+        $user->password = Hash::make($request->newPassword);
+        $user->save();
+
+        return \Success(__('auth.password_update '));
+    }
+
+
+
 
 
     /**
