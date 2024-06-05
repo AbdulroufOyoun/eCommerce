@@ -16,10 +16,11 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'email' => $this->email,
-            'phone' => $this->phone,
             'f_name' => $this->f_name,
             'l_name' => $this->l_name,
+            'display_name' => $this->display_name,
+            'email' => $this->email,
+            'phone' => $this->phone,
             'company_name' => $this->company_name,
             'is_active' => $this->is_active,
             'image' =>  url('storage/' . $this->userImage->image),

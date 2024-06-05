@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Enum\AccountTypeEnum;
+use App\Http\Requests\User\UserIdRequest;
 use App\Http\Requests\User\UserLoginRequest;
 use App\Http\Requests\User\UserSignUpRequest;
 use App\Http\Requests\User\UserUpdateRequest;
 use App\Http\Resources\Auth\LoginResource;
+use App\Http\Resources\User\ShowUsersResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use App\Models\UserAddress;
@@ -16,6 +18,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 
 class UserController extends Controller
@@ -34,96 +37,70 @@ class UserController extends Controller
             throw ValidationException::withMessages([__('auth.password_wrong')]);
         }
         $person['token'] = $person->createToken('authToken', ['User'])->accessToken;
-
-        return \SuccessData('Login success', new LoginResource($person));
+        return \SuccessData(__('auth.Login'), new LoginResource($person));
     }
 
     public function SignUp(UserSignUpRequest $request)
     {
-        $arr = Arr::only($request->validated(), [
-            'f_name', 'l_name', 'company_name', 'password',
-            'email', 'phone', 'display_name'
-        ]);
-        $addressArr = Arr::only($request->validated(), [
-            'state_id', 'address', 'zip_code'
-        ]);
-        $imageArr = Arr::only($request->validated(), ['image']);
-        if (\array_key_exists('image', $imageArr)) {
-            $path = 'Images/Profiles/';
-            $arr['image'] = \uploadImage($arr['image'], $path);
-        }
-        $arr['account_type'] = 1;
+        $arr = Arr::only($request->validated(),
+            ['f_name','l_name','company_name','display_name','email', 'password','state_id','address','zip_code','phone','image']);
         $user = $this->publicRepository->Create(User::class, $arr);
+        $arr['user_id'] = $user->id;
+        $this->publicRepository->Create(UserImage::class, $arr);
+        $this->publicRepository->Create(UserAddress::class, $arr);
         $user['token'] = $user->createToken('authToken', ['User'])->accessToken;
-
-
-        $addressArr['user_id'] = $user->id;
-        $this->publicRepository->Create(UserAddress::class, $addressArr);
-
-        $imageArr['user_id'] = $user->id;
-        $this->publicRepository->Create(UserImage::class, $imageArr);
-
-        return \SuccessData('User has created successful', new LoginResource($user));
+        return \SuccessData(__('auth.register'), new LoginResource($user));
     }
 
 
     public function logout()
     {
-        $user = \Auth::user();
+        $user = \auth('User')->user();
         $user->tokens()->where('scopes', '["User"]')->delete();
-        return \Success('you logout from all devices');
+        return \Success(__('auth.Logout'));
     }
 
-    public function block_user($id)
+    public function ActiveOrNotUser(UserIdRequest $request)
     {
-        $user = $this->publicRepository->ActiveOrNot(User::class, $id);
-        return \Success('Request successful');
+        $arr = Arr::only($request->validated(),['userId']);
+        $this->publicRepository->ActiveOrNot(User::class, $arr['userId']);
+        return \Success(__('public.active_or_not_User'));
     }
 
 
-    public function show_user($id)
+    public function show_user(UserIdRequest $request)
     {
-        $user = $this->publicRepository->ShowById(User::class, $id);
-        return \SuccessData('User has loaded successful', new UserResource($user));
+        $arr = Arr::only($request->validated(), ['userId']);
+        $user = $this->publicRepository->ShowById(User::class, $arr['userId']);
+        return \SuccessData(__('public.user_found'), new UserResource($user));
     }
 
     public function show_paginate_users()
     {
         $perPage = \returnPerPage();
         $user = $this->publicRepository->ShowAll(User::class, [])->paginate($perPage);
-        UserResource::collection($user);
+        ShowUsersResource::collection($user);
         return \Pagination($user);
     }
-
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UserUpdateRequest $request)
     {
-        $arr = Arr::only($request->validated(), [
-            'f_name', 'l_name', 'company_name',
-            'phone', 'display_name'
-        ]);
-        $addressArr = Arr::only($request->validated(), [
-            'state_id', 'address', 'zip_code'
-        ]);
-        $imageArr = Arr::only($request->validated(), ['image']);
+        $arr = Arr::only($request->validated(),
+            ['userId', 'f_name', 'l_name', 'company_name', 'email', 'phone', 'display_name', 'state_id', 'address', 'zip_code', 'image']);
 
-        if (5 === count($arr)) {
-            $this->publicRepository->update(User::class, \Auth::id(), $arr);
-        }
-        if (3 === count($addressArr)) {
-            $this->userRepository->UpdateAddress(\Auth::id(), $addressArr);
-        }
-        if (1 === count($imageArr)) {
+        $user = $this->publicRepository->ShowById(User::class, $arr['userId']);
+        $user->update($arr);
+        $user->UserAddress->update($arr);
+        if (\array_key_exists('image', $arr)) {
             $path = 'Images/Profiles/';
-
-            $imagePath = uploadImage($imageArr["image"], $path);
-            $this->userRepository->Image($imagePath, \Auth::id());
+            $arr['image'] = uploadImage($arr['image'], $path);
+            $user->UserImage->update($arr);
         }
 
-        return \Success('Account has Updated successfully');
+        return \Success(__('public.user_update'));
 
     }
 
@@ -131,9 +108,13 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy()
+    public function Delete(UserIdRequest $request)
     {
-        \Auth::user()->delete();
-        return \Success('Account has deleted successfully');
+        $arr = Arr::only($request->validated(), ['userId']);
+        $user = $this->publicRepository->ShowById(User::class, $arr['userId']);
+        $user->UserAddress->delete();
+        $user->UserImage->delete();
+        $user->delete();
+        return \Success(__('public.delete_user'));
     }
 }

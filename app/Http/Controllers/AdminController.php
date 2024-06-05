@@ -53,9 +53,8 @@ class AdminController extends Controller
     {
         $arr = Arr::only($request->validated(), ['name', 'email', 'password']);
         $arr['created_by'] = \auth()->user()->id;
-        $admin = $this->repository->Create(Admin::class, $arr);
-        $admin['token'] = $admin->createToken('authToken', ['Admin'])->accessToken;
-        return \SuccessData(__('auth.register'), new AdminLoginResource($admin));
+        $this->repository->Create(Admin::class, $arr);
+        return \Success(__('auth.register'));
     }
 
     public function DeleteById(AdminIdRequest $request)
@@ -79,7 +78,7 @@ class AdminController extends Controller
 
         $admins = $this->repository->ShowAll(Admin::class, $where)->paginate($perPage);
         ShowAdminsResource::collection($admins);
-        return \Pagination($admins, __('admin.admins_found'));
+        return \Pagination($admins);
     }
 
 
@@ -92,20 +91,17 @@ class AdminController extends Controller
 
 
     public function ShowById(AdminIdRequest $request)
-    {   
-
+    {
 
         $arr = Arr::only($request->validated(), ['adminId']);
         $admin = $this->repository->ShowById(Admin::class, $arr['adminId']);
-        
+
         $admin['permissions'] = $admin->permissions()->get(['uuid', 'name']);
-        
+
         foreach ($admin['permissions'] as $permission) {
             unset($permission->pivot);
         }
-        
         $admin = new ShowOneAdminResource($admin);
-
         return \SuccessData(__('admin.admin_found'), $admin);
     }
 
@@ -118,7 +114,6 @@ class AdminController extends Controller
         foreach ($permissions as $permission) {
             unset($permission->pivot);
         }
-
         return \SuccessData(__('admin.admin_permissions'), $permissions);
     }
 

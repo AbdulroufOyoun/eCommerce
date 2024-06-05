@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactUs\ContactUsIdRequest;
 use App\Http\Requests\ContactUs\ContactUsRequest;
 use App\Models\ContactUs;
 use App\Repositories\PublicRepository;
@@ -22,11 +23,9 @@ class ContactUsController extends Controller
     public function create(ContactUsRequest $request)
     {
         $arr = Arr::only($request->validated(), ['name', 'phone', 'email', 'message']);
-        if (\Auth::check()) {
-            $arr['user_id'] = \Auth::id();
-        }
+        $arr['user_id'] = \auth('User')->user()->id ?? null;
         $this->publicRepository->Create(ContactUs::class, $arr);
-        return \Success('Record has added successfully');
+        return \Success(__('public.contact_create'));
     }
 
 
@@ -44,9 +43,10 @@ class ContactUsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(ContactUsIdRequest $request)
     {
-        $this->publicRepository->DeleteById(ContactUs::class, $id);
-        return \Success('Record has deleted successfully');
+        $arr = Arr::only($request->validated(), ['contactUsId']);
+        $this->publicRepository->DeleteById(ContactUs::class, $arr['contactUsId']);
+        return \Success(__('public.contact_delete'));
     }
 }

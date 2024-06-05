@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Auth;
+namespace App\Http\Resources\Setting;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class LoginResource extends JsonResource
+class ShowHomePromoResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,8 +16,10 @@ class LoginResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'email' => $this->email,
-            'token' => $this->token,
+            'key' => $this->key,
+            'value' => $this->value ? \url('storage/'.$this->value) : null,
+            'is_video' => $this->is_video,
+            'description' => $this->description,
         ];
     }
 }

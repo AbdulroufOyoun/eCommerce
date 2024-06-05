@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\User;
 
+use App\Enums\ActiveStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -22,17 +23,18 @@ class UserSignUpRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
-            'f_name' => 'nullable',
-            'l_name' => 'nullable',
-            'company_name' => 'nullable',
+            'f_name' => 'required',
+            'l_name' => 'required',
+            'company_name' => 'required',
             'email' => [Rule::unique('users')->whereNull('deleted_at'), 'required', 'email'],
-            'phone' => 'nullable|min:10|max:10',
             'password' => 'required|min:8|confirmed',
+            'phone' => 'required|min:10|max:10',
             'display_name' => 'required',
-            'state_id' => [Rule::exists('states', 'id')->where('is_active', true), 'nullable'],
-            'address' => 'nullable',
-            'zip_code' => 'nullable',
+            'state_id' => [Rule::exists('states', 'id')->whereNull('deleted_at')->where('is_active', ActiveStatusEnum::ACTIVE), 'required'],
+            'address' => 'required',
+            'zip_code' => 'required',
             'image' => 'nullable|image',
         ];
     }

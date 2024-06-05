@@ -66,3 +66,18 @@ if (!function_exists('returnPerPage')) {
         return $perPage;
     }
 }
+
+if (!function_exists('CheckVideoOrImage')) {
+    function CheckVideoOrImage($image)
+    {
+        if (!$image) {
+            return null;
+        }
+        $image_extensions = ['.jpg', '.png', 'jpeg', '.gif', 'tiff', '.bmp', '.svg', 'webp', 'heic'];
+        $extension = substr($image, -4);
+        if (!in_array($extension, $image_extensions)) {
+            return true;
+        }
+        return false;
+    }
+}

@@ -27,8 +27,8 @@ class AdminCreateRequest extends FormRequest
             'name' => 'required',
             'email' => [Rule::unique('admins')->whereNull('deleted_at'),'required','email'],
             'password' => 'required|min:8|confirmed',
-            'is_active' =>[ Rule::in(ActiveStatusEnum::toArray())],
-           
+            'permissions' => 'required',
+            'permissions.*'=> [Rule::exists('permissions','uuid'),'required','distinct'],
         ];
     }
 }

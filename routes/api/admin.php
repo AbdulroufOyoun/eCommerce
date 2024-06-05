@@ -1,13 +1,14 @@
 <?php
 
-use App\Http\Controllers\AboutUsController;
+
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BinderyAttributeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NormalAttributeController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\ContactUsController;
-use App\Http\Controllers\HomePromoController;
+
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -54,7 +55,6 @@ Route::post('/update_normal_att', [NormalAttributeController::class, 'Update']);
 Route::get('/show_normal_atts', [NormalAttributeController::class, 'ShowAll']);
 Route::delete('/delete_normal_att', [NormalAttributeController::class, 'Delete']);
 
-Route::post('/login', [AdminController::class, 'Login']);
 
 Route::group(['middleware' => ['auth:Admin', 'scope:Admin']], function () {
     Route::controller(AdminController::class)->group(function () {
@@ -70,10 +70,15 @@ Route::group(['middleware' => ['auth:Admin', 'scope:Admin']], function () {
         //Route::post('/update_password', 'ChangePassword');
     });
 
-    Route::post('/update_homePromo', [HomePromoController::class, 'update']);
-    Route::post('/update_aboutUs', [AboutUsController::class, 'update']);
+    Route::post('/update_homePromo', [SettingController::class, 'UpdateHomePromo']);
+    Route::post('/update_aboutUs', [SettingController::class, 'UpdateAboutUs']);
+    Route::get('/show_aboutUs', [SettingController::class, 'ShowAboutUs']);
+    Route::get('/show_homePromo', [SettingController::class, 'ShowHomePromo']);
+
     Route::get('/show_paginate_users', [UserController::class, 'show_paginate_users']);
     Route::get('/show_ContactUs', [ContactUsController::class, 'show']);
-    Route::get('/delete_ContactUs/{id}', [ContactUsController::class, 'destroy']);
-    Route::get('/block_user/{id}', [UserController::class, 'block_user']);
+    Route::delete('/delete_ContactUs', [ContactUsController::class, 'destroy']);
+    Route::get('/active_or_not_user', [UserController::class, 'ActiveOrNotUser']);
+    Route::delete('/delete_user', [UserController::class, 'Delete']);
+    Route::get('/user', [UserController::class, 'show_user']);
 });

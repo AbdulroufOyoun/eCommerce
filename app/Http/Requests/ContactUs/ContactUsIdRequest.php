@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\ContactUs;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class UpdateAdminInfoRequest extends FormRequest
+class ContactUsIdRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,7 @@ class UpdateAdminInfoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'adminId' => [Rule::exists('admins', 'id')->whereNull('deleted_at'), 'required'],
-            'name' => 'required',
-            'email' => [Rule::unique('admins')->whereNull('deleted_at')->ignore($this->adminId, 'id'), 'required', 'email'],
+            'contactUsId' => [Rule::exists('contact_us','id')->whereNull('deleted_at'),'required'],
         ];
     }
 }

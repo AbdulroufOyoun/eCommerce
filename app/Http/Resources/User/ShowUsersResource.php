@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Admin;
+namespace App\Http\Resources\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ShowOneAdminResource extends JsonResource
+class ShowUsersResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +16,9 @@ class ShowOneAdminResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
             'email' => $this->email,
+            'display_name' => $this->display_name,
             'is_active' => $this->is_active,
-            'created_by' => $this->Admin ? $this->Admin->name : null,
-            'permissions' => $this->permissions,
-
         ];
     }
 }

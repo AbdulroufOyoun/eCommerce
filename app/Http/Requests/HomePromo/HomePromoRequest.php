@@ -22,9 +22,8 @@ class HomePromoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'nullable',
-            'video' => 'nullable',
-            'is_video' => 'required'
+            'value' => 'nullable|file',
+            'description' => 'nullable',
         ];
     }
 }
