@@ -1,6 +1,9 @@
 <?php
 
 
+
+use App\Http\Controllers\ProductTagController;
+use App\Http\Controllers\TagController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -58,6 +61,7 @@ Route::get('/show_normal_atts', [NormalAttributeController::class, 'ShowAll']);
 Route::delete('/delete_normal_att', [NormalAttributeController::class, 'Delete']);
 
 
+
 Route::group(['middleware' => ['auth:Admin', 'scope:Admin']], function () {
     Route::controller(AdminController::class)->group(function () {
         Route::post('/add_admin', 'Create');
@@ -94,7 +98,13 @@ Route::group(['middleware' => ['auth:Admin', 'scope:Admin']], function () {
     Route::post('/UpdateSocialLink' ,[SocialLinkesController::class, 'EditSocialLink']);
     Route::delete('/DeleteSocialLink' ,[SocialLinkesController::class, 'destroy']);
 
-
     Route::post('/ChangePassword' ,[PasswordController::class, 'SelfChangePassword']);
     Route::post('/ChangeAdminPassword' ,[PasswordController::class, 'ChangeِAdminPassword']);
+
+    Route::post('/add_tag', [TagController::class, 'create']);
+    Route::delete('/delete_tag', [TagController::class, 'destroy']);
+    Route::post('/update_tag', [TagController::class, 'update']);
+    Route::delete('/delete_product_tag', [ProductTagController::class, 'destroy']);
+
+
 });
