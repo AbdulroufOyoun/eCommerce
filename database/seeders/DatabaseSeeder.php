@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ContactUsSeeder::class);
         $this->call(StateSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(TagSeeder::class);
+
         $this->call(PermissionSeeder::class);
         $this->call(AdminSeeder::class);
         $this->call(SettingSeeder::class);

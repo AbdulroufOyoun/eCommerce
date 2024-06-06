@@ -8,8 +8,10 @@ use App\Http\Controllers\NormalAttributeController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\ProductTagController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\SocialLinkesController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -57,6 +59,7 @@ Route::get('/show_normal_atts', [NormalAttributeController::class, 'ShowAll']);
 Route::delete('/delete_normal_att', [NormalAttributeController::class, 'Delete']);
 
 
+
 Route::group(['middleware' => ['auth:Admin', 'scope:Admin']], function () {
     Route::controller(AdminController::class)->group(function () {
         Route::post('/add_admin', 'Create');
@@ -92,4 +95,10 @@ Route::group(['middleware' => ['auth:Admin', 'scope:Admin']], function () {
     Route::post('/AddSocialLink' ,[SocialLinkesController::class, 'AddSocialLink']);
     Route::post('/UpdateSocialLink' ,[SocialLinkesController::class, 'EditSocialLink']);
     Route::delete('/DeleteSocialLink' ,[SocialLinkesController::class, 'destroy']);
+
+    Route::post('/add_tag', [TagController::class, 'create']);
+    Route::delete('/delete_tag', [TagController::class, 'destroy']);
+    Route::post('/update_tag', [TagController::class, 'update']);
+    Route::delete('/delete_product_tag', [ProductTagController::class, 'destroy']);
+
 });
