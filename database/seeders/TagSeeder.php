@@ -31,7 +31,7 @@ class TagSeeder extends Seeder
         //
         ProductTag::create([
             'product_id' => State::first()->id,
-            'tag_id' => $tag->id
+            'tag_id' => $tag2->id
         ]);
         //
     }

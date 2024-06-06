@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-
+use App\Models\Rating;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         $this->call(StateSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(TagSeeder::class);
+        $this->call(RatingSeeder::class);
 
         $this->call(PermissionSeeder::class);
         $this->call(AdminSeeder::class);
