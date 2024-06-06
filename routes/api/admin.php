@@ -8,7 +8,8 @@ use App\Http\Controllers\NormalAttributeController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\ContactUsController;
-
+use App\Http\Controllers\SocialController;
+use App\Http\Controllers\SocialLinkesController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -81,4 +82,14 @@ Route::group(['middleware' => ['auth:Admin', 'scope:Admin']], function () {
     Route::get('/active_or_not_user', [UserController::class, 'ActiveOrNotUser']);
     Route::delete('/delete_user', [UserController::class, 'Delete']);
     Route::get('/user', [UserController::class, 'show_user']);
+
+    Route::get('/ShowSocial', [SocialController::class, 'ShowPlatforms']);
+    Route::post('/AddSocial', [SocialController::class, 'AddPlatform']);
+    Route::post('/ShowSocialPlatform', [SocialController::class, 'ShowById']);
+    Route::post('/UpdateSocialPlatform', [SocialController::class, 'UpdateSocialPlatform']);
+    Route::delete('/DeleteSocialPlatform', [SocialController::class, 'destroy']);
+
+    Route::post('/AddSocialLink' ,[SocialLinkesController::class, 'AddSocialLink']);
+    Route::post('/UpdateSocialLink' ,[SocialLinkesController::class, 'EditSocialLink']);
+    Route::delete('/DeleteSocialLink' ,[SocialLinkesController::class, 'destroy']);
 });

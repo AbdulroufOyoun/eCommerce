@@ -3,63 +3,74 @@
 namespace App\Http\Controllers;
 
 use App\Models\Social;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use App\Repositories\PublicRepository;
+use App\Http\Resources\SocialPlatformsResource;
+use App\Http\Requests\SocialPlatforms\SocialPlatformIdRequest;
+use App\Http\Requests\SocialPlatforms\AddSocialPlatformRequest;
+use App\Http\Requests\SocialPlatforms\EditSocialPlatformRequest;
 
 class SocialController extends Controller
-{
+{  
+     
+
+    public function __construct(public PublicRepository $repository)
+    {
+    }
+
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function ShowPlatforms()
     {
-        //
+        $platforms = $this->repository->ShowAll(Social::class, [])->get();
+        return  \SuccessData(__('public.ShowSocial'), SocialPlatformsResource::collection($platforms)) ;
+
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function AddPlatform(AddSocialPlatformRequest $request)
     {
-        //
+        $arr = Arr::only($request->validated(), ['name','icon']);
+        $path = 'Images/Social/';
+        $arr['icon'] = \uploadImage($arr['icon'], $path);
+        $this->repository->create(Social::class,$arr);
+        return \Success(__('public.AddSocial'));
+        
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function ShowById(SocialPlatformIdRequest $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Social $social)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Social $social)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Social $social)
-    {
-        //
+        $arr = Arr::only($request->validated(), ['SocialPlatformId']);
+        $arr = $this->repository->ShowById(Social::class, $arr['SocialPlatformId']);
+        return \SuccessData(__('public.SocialPlatform_found'), new SocialPlatformsResource($arr));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Social $social)
+    public function destroy(SocialPlatformIdRequest $request)
     {
-        //
+        $arr = Arr::only($request->validated(), ['SocialPlatformId']);
+        $this->repository->DeleteById(Social::class, $arr['SocialPlatformId']);
+        return \Success(__('public.SocialPlatform_deleted'));
+    }
+
+
+    public function UpdateSocialPlatform(EditSocialPlatformRequest $request){
+
+        $arr = Arr::only($request->validated(),['SocialPlatformId','name','icon']);
+
+        if(\array_key_exists('icon',$arr)){
+            $path  = 'Images/Social/';
+            $arr['icon'] = \uploadImage($arr['icon'],$path);
+        }
+        $this->repository->Update(Social::class,$arr['SocialPlatformId'],$arr);
+
+        return \Success(__('public.SocialPlatform_updated'));
     }
 }

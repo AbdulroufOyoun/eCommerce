@@ -37,4 +37,16 @@ return [
     'user_found' => 'User Found Successfully',
     'delete_user' => 'User Deleted Successfully',
     'user_update' => 'User Updated Successfully',
+    
+    'ShowSocial' => 'Social Platforms Retrived Successfully',
+    'AddSocial' => 'Social Platforms Added Successfully',
+    'SocialPlatform_found' => 'Social Platform found Successfully',
+    'SocialPlatform_deleted' => 'Social Platform deleted Successfully',
+    'SocialPlatform_updated' => 'Social Platform updated Successfully',
+    
+    'SocialLink_added' => 'Social Link added Successfully',
+    'SocialLink_updated' => 'Social Link updated Successfully',
+    'SocialLink_deleted' => 'Social Link deleted Successfully',
+    
+
     ];

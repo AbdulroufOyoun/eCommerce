@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('social_id')->constrained('socials')->cascadeOnDelete();
             $table->string('link');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
