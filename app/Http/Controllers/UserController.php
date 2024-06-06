@@ -105,23 +105,6 @@ class UserController extends Controller
 
     }
 
-    public function ResetPassword(ResetPasswordRequest $request)
-    {
-        // $arr = Arr::only($request->validated(), ['oldPassword', 'newPassword']);
-        $user = \auth('User')->user();
-
-        if (!Hash::check($request->oldPassword, $user->password)) {
-            return \Success(__('auth.password'));
-        }
-
-        $user->password = Hash::make($request->newPassword);
-        $user->save();
-
-        return \Success(__('auth.password_update '));
-    }
-
-
-
 
 
     /**

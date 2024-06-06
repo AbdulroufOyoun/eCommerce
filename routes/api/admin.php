@@ -1,18 +1,19 @@
 <?php
 
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\BinderyAttributeController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\NormalAttributeController;
-use App\Http\Controllers\SettingController;
-use App\Http\Controllers\StateController;
-use App\Http\Controllers\ContactUsController;
-use App\Http\Controllers\SocialController;
-use App\Http\Controllers\SocialLinkesController;
-use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\StateController;
+use App\Http\Controllers\SocialController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\SocialLinkesController;
+use App\Http\Controllers\NormalAttributeController;
+use App\Http\Controllers\BinderyAttributeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,4 +93,8 @@ Route::group(['middleware' => ['auth:Admin', 'scope:Admin']], function () {
     Route::post('/AddSocialLink' ,[SocialLinkesController::class, 'AddSocialLink']);
     Route::post('/UpdateSocialLink' ,[SocialLinkesController::class, 'EditSocialLink']);
     Route::delete('/DeleteSocialLink' ,[SocialLinkesController::class, 'destroy']);
+
+
+    Route::post('/ChangePassword' ,[PasswordController::class, 'SelfChangePassword']);
+    Route::post('/ChangeAdminPassword' ,[PasswordController::class, 'ChangeِAdminPassword']);
 });
