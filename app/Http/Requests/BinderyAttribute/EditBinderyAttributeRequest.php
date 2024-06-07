@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\BinderyAttribute;
 
+use App\Enums\AttributeTypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -25,7 +26,7 @@ class EditBinderyAttributeRequest extends FormRequest
         return [
             'binderyAttId' => [Rule::exists('bindery_attributes','id')->whereNull('deleted_at'),'required'],
             'name' => [Rule::unique('bindery_attributes')->whereNull('deleted_at')->ignore($this->binderyAttId,'id'),'required'],
-
+            'attribute_type' => [Rule::in(AttributeTypeEnum::toArray(),'numeric','required')],
         ];
     }
 }

@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('normal_attributes', function (Blueprint $table) {
+        Schema::create('product_images', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('admin_id')->constrained('admins')->cascadeOnDelete();
-            $table->string('name');
-            $table->integer('attribute_type');
+            $table->foreignUuid('product_id')->constrained('products')->cascadeOnDelete();
+            $table->string('image');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('normal_attributes');
+        Schema::dropIfExists('product_images');
     }
 };

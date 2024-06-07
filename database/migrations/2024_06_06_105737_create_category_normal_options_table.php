@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('normal_attributes', function (Blueprint $table) {
+        Schema::create('category_normal_options', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('admin_id')->constrained('admins')->cascadeOnDelete();
-            $table->string('name');
-            $table->integer('attribute_type');
+            $table->foreignUuid('category_id')->constrained('categories')->cascadeOnDelete();
+            $table->foreignUuid('normal_option_id')->constrained('normal_attribute_options')->cascadeOnDelete();
+            $table->foreignUuid('category_normal_att_id')->constrained('category_normal_attributes')->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('normal_attributes');
+        Schema::dropIfExists('category_normal_options');
     }
 };

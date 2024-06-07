@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\NormalAttribute;
 
+use App\Enums\AttributeTypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -24,6 +25,7 @@ class AddNormalAttributeRequest extends FormRequest
     {
         return [
             'name' => [Rule::unique('normal_attributes')->whereNull('deleted_at'),'required'],
+            'attribute_type' => [Rule::in(AttributeTypeEnum::toArray(),'numeric','required')],
         ];
     }
 }

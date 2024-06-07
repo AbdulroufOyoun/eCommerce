@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('normal_attributes', function (Blueprint $table) {
+        Schema::create('bindery_attribute_options', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('admin_id')->constrained('admins')->cascadeOnDelete();
+            $table->foreignUuid('bindery_att_id')->constrained('bindery_attributes')->cascadeOnDelete();
             $table->string('name');
-            $table->integer('attribute_type');
+            $table->unsignedDouble('setup_price');
+            $table->unsignedDouble('price_per_unit');
+            $table->unsignedDouble('markup');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('normal_attributes');
+        Schema::dropIfExists('bindery_attribute_options');
     }
 };

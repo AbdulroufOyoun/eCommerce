@@ -3,8 +3,11 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BinderyAttributeController;
+use App\Http\Controllers\BinderyAttributeOptionController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NormalAttributeController;
+use App\Http\Controllers\NormalAttributeOptionController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\ContactUsController;
@@ -40,6 +43,15 @@ Route::delete('/delete_category', [CategoryController::class, 'Delete']);
 Route::get('/show_one_category', [CategoryController::class, 'ShowById']);
 Route::get('/show_categories', [CategoryController::class, 'ShowAll']);
 Route::post('/update_category', [CategoryController::class, 'Update']);
+Route::post('/update_category_attributes', [CategoryController::class, 'UpdateCategoryAttributes']);
+
+Route::post('/add_product', [ProductController::class, 'Create']);
+Route::post('/active_or_not_product', [ProductController::class, 'ActiveOrNot']);
+Route::delete('/delete_product', [ProductController::class, 'Delete']);
+Route::post('/update_product', [ProductController::class, 'Update']);
+Route::post('/change_quantity_price',[ProductController::class,'UpdateQuantityPrice']);
+Route::post('/add_product_images',[ProductController::class,'AddExtraImages']);
+Route::delete('/delete_product_image',[ProductController::class,'DeleteProductImage']);
 
 
 Route::post('/add_bindery_att', [BinderyAttributeController::class, 'Create']);
@@ -49,13 +61,16 @@ Route::get('/show_bindery_atts', [BinderyAttributeController::class, 'ShowAll'])
 Route::delete('/delete_bindery_att', [BinderyAttributeController::class, 'Delete']);
 
 
+
+
+
 Route::post('/add_normal_att', [NormalAttributeController::class, 'Create']);
 Route::get('/show_one_normal_att', [NormalAttributeController::class, 'ShowById']);
 Route::post('/update_normal_att', [NormalAttributeController::class, 'Update']);
 Route::get('/show_normal_atts', [NormalAttributeController::class, 'ShowAll']);
 Route::delete('/delete_normal_att', [NormalAttributeController::class, 'Delete']);
 
-
+Route::get('/show_permissions',[AdminController::class,'ShowAllPermission']);
 Route::group(['middleware' => ['auth:Admin', 'scope:Admin']], function () {
     Route::controller(AdminController::class)->group(function () {
         Route::post('/add_admin', 'Create');
@@ -81,4 +96,18 @@ Route::group(['middleware' => ['auth:Admin', 'scope:Admin']], function () {
     Route::get('/active_or_not_user', [UserController::class, 'ActiveOrNotUser']);
     Route::delete('/delete_user', [UserController::class, 'Delete']);
     Route::get('/user', [UserController::class, 'show_user']);
+
+
+    Route::post('/add_bindery_option', [BinderyAttributeOptionController::class, 'Create']);
+    Route::post('/update_bindery_option', [BinderyAttributeOptionController::class, 'Update']);
+    Route::get('/show_bindery_options', [BinderyAttributeOptionController::class, 'ShowAll']);
+    Route::delete('/delete_bindery_option', [BinderyAttributeOptionController::class, 'Delete']);
+
+    Route::post('/add_normal_option', [NormalAttributeOptionController::class, 'Create']);
+    Route::post('/update_normal_option', [NormalAttributeOptionController::class, 'Update']);
+    Route::get('/show_normal_options', [NormalAttributeOptionController::class, 'ShowAll']);
+    Route::delete('/delete_normal_option', [NormalAttributeOptionController::class, 'Delete']);
+
+
+
 });
