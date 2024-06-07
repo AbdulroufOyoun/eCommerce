@@ -1,7 +1,14 @@
 <?php
 
 use App\Http\Controllers\ContactUsController;
+
+use App\Http\Controllers\PasswordController;
+
+use App\Http\Controllers\ProductTagController;
+use App\Http\Controllers\RatingController;
+
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use App\Models\ContactUs;
 use Illuminate\Http\Request;
@@ -28,14 +35,17 @@ Route::get('/show_homePromo', [SettingController::class, 'ShowHomePromo']);
 
 Route::post('/add_contactUs', [ContactUsController::class, 'create']);
 
+Route::get('/show_tags', [TagController::class, 'index']);
+Route::get('/products_with_tagId', [ProductTagController::class, 'showWithTagId']);
+Route::get('/tags_with_productId', [ProductTagController::class, 'showWithProductId']);
+
 
 Route::middleware(['auth:User'])->group(function () {
     Route::post('/logout', [UserController::class, 'logout']);
     Route::post('/update_profile', [UserController::class, 'update']);
+    Route::post('/change_password', [PasswordController::class, 'SelfChangePassword']);
 
-    //
 
-    //
-
+    Route::post('/add_rating', [RatingController::class, 'create']);
 });
 

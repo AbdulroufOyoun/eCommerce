@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enum\AccountTypeEnum;
+use App\Http\Requests\User\ResetPasswordRequest;
 use App\Http\Requests\User\UserIdRequest;
 use App\Http\Requests\User\UserLoginRequest;
 use App\Http\Requests\User\UserSignUpRequest;
@@ -103,6 +104,7 @@ class UserController extends Controller
         return \Success(__('public.user_update'));
 
     }
+
 
 
     /**

@@ -1,6 +1,7 @@
 <?php
 
 
+
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BinderyAttributeController;
 use App\Http\Controllers\BinderyAttributeOptionController;
@@ -12,9 +13,16 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\ContactUsController;
 
-use App\Http\Controllers\UserController;
+
+use App\Http\Controllers\ProductTagController;
+use App\Http\Controllers\TagController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\SocialController;
+use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\SocialLinkesController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -70,7 +78,12 @@ Route::post('/update_normal_att', [NormalAttributeController::class, 'Update']);
 Route::get('/show_normal_atts', [NormalAttributeController::class, 'ShowAll']);
 Route::delete('/delete_normal_att', [NormalAttributeController::class, 'Delete']);
 
+
 Route::get('/show_permissions',[AdminController::class,'ShowAllPermission']);
+
+
+
+
 Route::group(['middleware' => ['auth:Admin', 'scope:Admin']], function () {
     Route::controller(AdminController::class)->group(function () {
         Route::post('/add_admin', 'Create');
@@ -98,6 +111,7 @@ Route::group(['middleware' => ['auth:Admin', 'scope:Admin']], function () {
     Route::get('/user', [UserController::class, 'show_user']);
 
 
+
     Route::post('/add_bindery_option', [BinderyAttributeOptionController::class, 'Create']);
     Route::post('/update_bindery_option', [BinderyAttributeOptionController::class, 'Update']);
     Route::get('/show_bindery_options', [BinderyAttributeOptionController::class, 'ShowAll']);
@@ -107,6 +121,26 @@ Route::group(['middleware' => ['auth:Admin', 'scope:Admin']], function () {
     Route::post('/update_normal_option', [NormalAttributeOptionController::class, 'Update']);
     Route::get('/show_normal_options', [NormalAttributeOptionController::class, 'ShowAll']);
     Route::delete('/delete_normal_option', [NormalAttributeOptionController::class, 'Delete']);
+
+
+
+    Route::get('/ShowSocial', [SocialController::class, 'ShowPlatforms']);
+    Route::post('/AddSocial', [SocialController::class, 'AddPlatform']);
+    Route::post('/ShowSocialPlatform', [SocialController::class, 'ShowById']);
+    Route::post('/UpdateSocialPlatform', [SocialController::class, 'UpdateSocialPlatform']);
+    Route::delete('/DeleteSocialPlatform', [SocialController::class, 'destroy']);
+
+    Route::post('/AddSocialLink' ,[SocialLinkesController::class, 'AddSocialLink']);
+    Route::post('/UpdateSocialLink' ,[SocialLinkesController::class, 'EditSocialLink']);
+    Route::delete('/DeleteSocialLink' ,[SocialLinkesController::class, 'destroy']);
+
+    Route::post('/ChangePassword' ,[PasswordController::class, 'SelfChangePassword']);
+    Route::post('/ChangeAdminPassword' ,[PasswordController::class, 'ChangeِAdminPassword']);
+
+    Route::post('/add_tag', [TagController::class, 'create']);
+    Route::delete('/delete_tag', [TagController::class, 'destroy']);
+    Route::post('/update_tag', [TagController::class, 'update']);
+    Route::delete('/delete_product_tag', [ProductTagController::class, 'destroy']);
 
 
 

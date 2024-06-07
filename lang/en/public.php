@@ -46,6 +46,7 @@ return [
     'delete_user' => 'User Deleted Successfully',
     'user_update' => 'User Updated Successfully',
 
+
     'bindery_option_create' => 'Bindery Attribute Option Created Successfully',
     'bindery_option_update' => 'Bindery Attribute Option Updated Successfully',
     'bindery_option_delete' => 'Bindery Attribute Option Deleted Successfully',
@@ -57,4 +58,23 @@ return [
     'edit_quantity_price' => 'Price Change Successfully',
     'add_product_images' => 'images Created Successfully',
     'delete_product_image' => 'image Deleted Successfully',
+
+
+    'ShowSocial' => 'Social Platforms Retrived Successfully',
+    'AddSocial' => 'Social Platforms Added Successfully',
+    'SocialPlatform_found' => 'Social Platform found Successfully',
+    'SocialPlatform_deleted' => 'Social Platform deleted Successfully',
+    'SocialPlatform_updated' => 'Social Platform updated Successfully',
+
+    'SocialLink_added' => 'Social Link added Successfully',
+    'SocialLink_updated' => 'Social Link updated Successfully',
+    'SocialLink_deleted' => 'Social Link deleted Successfully',
+
+    'Show' => 'The Record loaded Successfully',
+    'Add' => 'The Record Added Successfully',
+    'Delete' => 'The Record deleted Successfully',
+    'Update' => 'The Record updated Successfully',
+
+
 ];
+
