@@ -35,33 +35,7 @@ class TagController extends Controller
         return \Success(__('public.Add'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Tag $tag)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Tag $tag)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateTagRequest $request)
     {
         $arr = Arr::only($request->validated(), ['tagId', 'name']);
@@ -69,9 +43,7 @@ class TagController extends Controller
         return \Success(__('public.Update'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(TagIdRequest $request)
     {
         $arr = Arr::only($request->validated(), ['tagId']);

@@ -24,7 +24,7 @@ class AddSocialLinkRequest extends FormRequest
     {
         return [
             'social_id' => [Rule::exists('socials','id')->whereNull('deleted_at'),'required'],
-            'link' => ['required','url'],
+            'link' => 'required',
         ];
     }
 }

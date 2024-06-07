@@ -24,7 +24,7 @@ class ChangeAdminPasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => [Rule::exists('admins','id')->whereNull('deleted_at'), 'required'],
+            'adminId' => [Rule::exists('admins','id')->whereNull('deleted_at'), 'required'],
             'new_password' => 'required|min:8|confirmed',
         ];
     }

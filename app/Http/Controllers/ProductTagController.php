@@ -22,11 +22,12 @@ class ProductTagController extends Controller
      */
     public function showWithTagId(TagIdRequest $request)
     {
+        $perPage = \returnPerPage();
         $arr = Arr::only($request->validated(), ['tagId']);
         $where = ['tag_id' => $arr['tagId']];
-        $tag = $this->publicRepository->ShowAll(ProductTag::class, $where)->get();
-        // return new TagResource($tag);
-        return \SuccessData(__('public.Show'), TagResource::collection($tag));
+        $products = $this->publicRepository->ShowAll(ProductTag::class, $where)->paginate($perPage);
+        $products = TagResource::collection($products);
+        return \Pagination($products);
     }
 
     /**
@@ -41,49 +42,6 @@ class ProductTagController extends Controller
     }
 
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(ProductTag $productTag)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ProductTag $productTag)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, ProductTag $productTag)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(ProductTagIdRequest $request)
     {
         $arr = Arr::only($request->validated(), ['productTagId']);

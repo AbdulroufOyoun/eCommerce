@@ -21,18 +21,17 @@ class TagSeeder extends Seeder
         $tag2 = Tag::create([
             'name' => 'perfect'
         ]);
-        $tag;
-        $tag2;
-        //changeWhenProductAdd change State::first()->id to Product::first()->id
+
+
         ProductTag::create([
             'product_id' => State::first()->id,
             'tag_id' => $tag->id
         ]);
-        //
+
         ProductTag::create([
             'product_id' => State::first()->id,
             'tag_id' => $tag2->id
         ]);
-        //
+
     }
 }

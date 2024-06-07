@@ -14,9 +14,7 @@ return new class extends Migration
         Schema::create('product_tags', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('tag_id')->constrained('tags')->cascadeOnDelete();
-            //changeWhenProductAdd  states to products
-            $table->foreignUuid('product_id')->constrained('states')->cascadeOnDelete();
-            //
+            $table->foreignUuid('product_id')->constrained('products')->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
             $table->unique(['tag_id', 'product_id']);
