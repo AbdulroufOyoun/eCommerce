@@ -2,17 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Admin;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Mail\PasswordResetMail;
+use App\Models\PasswordResetToken;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Jobs\Password\DeleteTokenJob;
 use App\Repositories\PublicRepository;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\Password\ChangePasswordRequest;
 use App\Http\Requests\Password\ChangeAdminPasswordRequest;
+use App\Http\Requests\Password\PasswordEmailCallbackrequest;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PasswordController extends Controller
 {
+   
+
     public function __construct( public PublicRepository $repository)
     {
         $this->middleware('permission:Admin Management',
@@ -46,12 +58,54 @@ class PasswordController extends Controller
        
         $this->repository->update(Admin::class, $person->id, ['password' => $arr['new_password']]);
 		
-        return \Success(__('auth.password_update'), 201);
+        return \Success(__('auth.password_update'));
 
     } 
 
+    public function SendEmail(){
+
+       
+        $user = \auth()->user();
+        $user =   $this->repository->ShowById(User::class, $user->id);
+        
+        $token = Str::random(60);
+
+       PasswordResetToken::create([
+            'email' => $user->email,
+            'token' => $token, //Couldn't add Hash::make, i can't find a way to search for the hashed token in DB
+            'created_at' => Carbon::now(),
+            'user_id' => $user->id
+        ]);
+
+        Mail::to($user->email)->send(new PasswordResetMail($token,$user->email));
+        DeleteTokenJob::dispatch($user->email, $token)->delay(Carbon::now()->addMinutes(15));
+
+        return \Success(__('passwords.ResetLinkSent'));
+
+       
+    }
+
+    public function EmailCallback(PasswordEmailCallbackrequest $request){
+
+        $arr = Arr::only($request->validated(), ['token', 'email']);
+        $where = [
+            ['email', '=', $arr['email']] 
+        ];
+        $attr = $this->repository->ShowAll(PasswordResetToken::class,$where)->latest()->first();
+        
+        if (!$attr || $arr['token'] != $attr->token) {
+            throw ValidationException::withMessages([__('passwords.Link_Expired')]);
+        }
+
+        $this->repository->ShowAll(PasswordResetToken::class,$where)->delete();
+        return \Success(__('passwords.verification_completed')); 
+    }
+
+
+    }
 
 
 
 
-}
+
+
