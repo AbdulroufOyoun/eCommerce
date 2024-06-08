@@ -70,11 +70,10 @@ return [
     'SocialLink_updated' => 'Social Link updated Successfully',
     'SocialLink_deleted' => 'Social Link deleted Successfully',
 
-    'Show' => 'The Record loaded Successfully',
-    'Add' => 'The Record Added Successfully',
-    'Delete' => 'The Record deleted Successfully',
-    'Update' => 'The Record updated Successfully',
+    'Show' => 'The Record has loaded Successfully',
+    'Add' => 'The Record has Added Successfully',
+    'Delete' => 'The Record has deleted Successfully',
+    'Update' => 'The Record has updated Successfully',
 
 
 ];
-

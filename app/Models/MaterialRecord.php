@@ -8,24 +8,23 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ContactUs extends Model
+class MaterialRecord extends Model
 {
-    use HasFactory, HasUuids,SoftDeletes;
+    use HasFactory, HasUuids;
 
     protected $fillable = [
-        'user_id',
-        'name',
-        'email',
-        'phone',
-        'message',
+        'material_id',
+        'quantity',
+        'type',
     ];
 
     protected $hidden = [
-        'created_at',
-        'updated_at',
+
+        'deleted_at'
     ];
 
-    public function User():BelongsTo{
-        return $this->belongsTo(User::class,'user_id');
+    public function Material(): BelongsTo
+    {
+        return $this->belongsTo(Material::class, 'material_id');
     }
 }
