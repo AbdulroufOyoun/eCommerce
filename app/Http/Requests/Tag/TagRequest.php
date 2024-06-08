@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Tag;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class TagRequest extends FormRequest
 {
@@ -22,7 +23,7 @@ class TagRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required'
+            'name' => [Rule::unique('tags')->whereNull('deleted_at'),'required'],
         ];
     }
 }

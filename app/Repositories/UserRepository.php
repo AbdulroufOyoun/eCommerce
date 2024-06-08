@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Enums\MaterialEnum;
 use App\Interfaces\UserRepositoryInterface;
+use App\Models\Material;
 use App\Models\UserImage;
 
 class UserRepository implements UserRepositoryInterface
@@ -26,5 +28,19 @@ class UserRepository implements UserRepositoryInterface
     {
         // TODO: Implement Update() method.
         $model::first()->update($arr);
+    }
+
+    public function ChangeQuantity($material, $arr)
+    {
+
+        if ($arr['type'] == MaterialEnum::input) {
+
+            $material->current_quantity = $material->current_quantity + $arr['quantity'];
+        } else {
+            if ($material->current_quantity - $arr['quantity'] > 0) {
+                $material->current_quantity = $material->current_quantity - $arr['quantity'];
+            }
+        }
+        $material->save();
     }
 }

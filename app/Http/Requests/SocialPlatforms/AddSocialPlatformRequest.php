@@ -3,6 +3,7 @@
 namespace App\Http\Requests\SocialPlatforms;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AddSocialPlatformRequest extends FormRequest
 {
@@ -22,8 +23,8 @@ class AddSocialPlatformRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required','string'],
-            'icon' => 'required|mimes:ico,jpg',
+            'name' => [Rule::unique('socials')->whereNull('deleted_at'),'required'],
+            'icon' => 'required|image',
         ];
     }
 }

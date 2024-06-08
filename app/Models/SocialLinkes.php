@@ -24,6 +24,6 @@ class SocialLinkes extends Model
      */
     public function platform(): BelongsTo
     {
-        return $this->belongsTo(Social::class);
+        return $this->belongsTo(Social::class,'social_id');
     }
 }

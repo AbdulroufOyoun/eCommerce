@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductTagController;
 use App\Http\Controllers\RatingController;
 
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SocialController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use App\Models\ContactUs;
@@ -25,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/ShowSocial', [SocialController::class, 'ShowPlatforms']);
 Route::post('/signUp', [UserController::class, 'signUp']);
 Route::post('/login', [UserController::class, 'login']);
 Route::get('/user', [UserController::class, 'show_user']);

@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_tags', function (Blueprint $table) {
+        Schema::create('material_records', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('tag_id')->constrained('tags')->cascadeOnDelete();
-            $table->foreignUuid('product_id')->constrained('products')->cascadeOnDelete();
+            $table->foreignUuid('material_id')->constrained('materials')->cascadeOnDelete();
+            $table->integer('quantity');
+            $table->boolean('type');
             $table->timestamps();
-            $table->softDeletes();
-            $table->unique(['tag_id', 'product_id']);
         });
     }
 
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_tags');
+        Schema::dropIfExists('material_records');
     }
 };

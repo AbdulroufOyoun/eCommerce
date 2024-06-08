@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Tag;
+namespace App\Http\Requests\Material;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class ProductIdRequest extends FormRequest
+class MaterialRecordsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +21,11 @@ class ProductIdRequest extends FormRequest
      */
     public function rules(): array
     {
-        //changeWhenProductAdd change states to products
         return [
-            'productId' => [Rule::exists('products', 'id')->whereNull('deleted_at'), 'required'],
-
+            'records' => 'required',
+            // 'records.*.material_id' => 'required',
+            'records.*.quantity' => 'required|integer',
+            'records.*.type' => 'required|boolean',
         ];
     }
 }

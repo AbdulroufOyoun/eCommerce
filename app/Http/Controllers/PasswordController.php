@@ -23,41 +23,33 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PasswordController extends Controller
 {
-   
 
-    public function __construct( public PublicRepository $repository)
+    public function __construct(public PublicRepository $repository)
+
     {
         $this->middleware('permission:Admin Management',
-        ['only' => ['ChangeِAdminPassword']]);
+            ['only' => ['ChangeِAdminPassword']]);
     }
 
     public function SelfChangePassword(ChangePasswordRequest $request)
     {
-        
         $arr = Arr::only($request->validated(), ['old_password', 'new_password']);
-
         $person = \auth()->user();
-        $model =get_class( $person);
-        
-
+        $model = get_class($person);
         if (!Hash::check($arr['old_password'], $person->password)) {
             throw ValidationException::withMessages([__('auth.failed')]);
         }
-
         $this->repository->update($model, $person->id, ['password' => $arr['new_password']]);
-		
-        return \Success(__('auth.password_update'), 201);
-    } 
+        return \Success(__('auth.password_update'));
+    }
+
 
     public function ChangeِAdminPassword(ChangeAdminPasswordRequest $request)
     {
-        
-        $arr = Arr::only($request->validated(), ['id', 'new_password']);
 
-        $person = $this->repository->ShowById(Admin::class,$arr['id']);
-       
-        $this->repository->update(Admin::class, $person->id, ['password' => $arr['new_password']]);
-		
+        $arr = Arr::only($request->validated(), ['adminId', 'new_password']);
+        $admin = $this->repository->ShowById(Admin::class, $arr['adminId']);
+        $this->repository->update(Admin::class, $admin->id, ['password' => $arr['new_password']]);
         return \Success(__('auth.password_update'));
 
     } 
@@ -102,10 +94,12 @@ class PasswordController extends Controller
     }
 
 
-    }
+}
 
 
 
 
+       
 
 
+    

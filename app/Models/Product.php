@@ -42,4 +42,14 @@ class Product extends Model
     {
         return $this->hasMany(ProductQuantity::class, 'product_id');
     }
+
+    public function Rates(): HasMany
+    {
+        return $this->hasMany(Rating::class, 'product_id');
+    }
+
+    public function ProductTags(): HasMany
+    {
+        return $this->hasMany(ProductTag::class, 'tag_id');
+    }
 }

@@ -17,6 +17,11 @@ class Social extends Model
         'name',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
     /**
      * Get all of the links for the Social
      *
@@ -24,6 +29,6 @@ class Social extends Model
      */
     public function links(): HasMany
     {
-        return $this->hasMany(SocialLinkes::class,);
+        return $this->hasMany(SocialLinkes::class,'social_id');
     }
 }
