@@ -24,8 +24,8 @@ class RatingRequest extends FormRequest
     {
         //changeWhenProductAdd change states to products
         return [
-            'product_id' => [Rule::exists('states', 'id')->whereNull('deleted_at'), 'required'],
-            'rating' => 'required'
+            'product_id' => [Rule::exists('products', 'id')->whereNull('deleted_at'), 'required'],
+            'rating' => 'required|numeric|min:1|max:5',
         ];
     }
 }

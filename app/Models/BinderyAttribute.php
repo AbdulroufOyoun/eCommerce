@@ -6,15 +6,17 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BinderyAttribute extends Model
 {
-    use HasFactory,HasUuids,SoftDeletes;
+    use HasFactory, HasUuids, SoftDeletes;
 
     protected $fillable = [
         'admin_id',
         'name',
+        'attribute_type',
     ];
 
     protected $hidden = [
@@ -38,7 +40,21 @@ class BinderyAttribute extends Model
         $this->attributes['admin_id'] = \auth('Admin')->user()->id;
     }
 
-    public function Admin():BelongsTo{
-        return $this->belongsTo(Admin::class,'admin_id');
+    public function Admin(): BelongsTo
+    {
+        return $this->belongsTo(Admin::class, 'admin_id');
     }
+
+    public function BinderyAttributeOptions(): HasMany
+    {
+        return $this->hasMany(BinderyAttributeOption::class, 'bindery_att_id');
+    }
+
+    /** @noinspection PhpUnused */
+    public function CategoryBinderyAttributes(): HasMany
+    {
+        return $this->hasMany(CategoryBinderyAttribute::class, 'bindery_att_id');
+    }
+
 }
+

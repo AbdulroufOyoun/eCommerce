@@ -19,4 +19,7 @@ return [
     'Login' => 'Login Successfully',
     'Logout' => 'Logged out Successfully',
     'register' => 'User Added Successfully',
+
+
+    'password_update' => 'Password Updated Successfully',
 ];

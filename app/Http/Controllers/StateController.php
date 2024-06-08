@@ -10,6 +10,7 @@ use App\Models\State;
 use App\Repositories\PublicRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Spatie\Permission\Models\Permission;
 
 class StateController extends Controller
 {
@@ -60,4 +61,9 @@ class StateController extends Controller
 
     }
 
+    public function ShowAllPermission()
+    {
+        $permissions = $this->repository->ShowAll(Permission::class, [])->get(['uuid', 'name']);
+        return \SuccessData(__('public.permission_found'), $permissions);
+    }
 }

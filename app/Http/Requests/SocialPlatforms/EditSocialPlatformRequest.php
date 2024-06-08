@@ -24,9 +24,9 @@ class EditSocialPlatformRequest extends FormRequest
     {
         return [
             'SocialPlatformId' => [Rule::exists('socials', 'id')->whereNull('deleted_at'), 'required'],
-            'name' => ['string', 'required'],
-            'icon' => 'nullable|mimes:ico,jpg',
-            
+            'name' => [Rule::unique('socials')->whereNull('deleted_at')->ignore($this->SocialPlatformId, 'id'), 'required'],
+            'icon' => 'nullable|image',
+
         ];
     }
 }

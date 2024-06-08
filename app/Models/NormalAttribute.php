@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class NormalAttribute extends Model
@@ -15,6 +16,7 @@ class NormalAttribute extends Model
     protected $fillable = [
         'admin_id',
         'name',
+        'attribute_type',
     ];
 
     protected $hidden = [
@@ -41,5 +43,17 @@ class NormalAttribute extends Model
     public function Admin(): BelongsTo
     {
         return $this->belongsTo(Admin::class, 'admin_id');
+    }
+
+    /** @noinspection PhpUnused */
+    public function NormalAttributeOptions(): HasMany
+    {
+        return $this->hasMany(NormalAttributeOption::class, 'normal_att_id');
+    }
+
+    /** @noinspection PhpUnused */
+    public function CategoryNormalAttributes(): HasMany
+    {
+        return $this->hasMany(CategoryNormalAttribute::class, 'normal_att_id');
     }
 }

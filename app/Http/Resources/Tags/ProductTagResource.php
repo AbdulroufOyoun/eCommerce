@@ -15,9 +15,8 @@ class ProductTagResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'tag' => $this->Tags,
-            'product_id' => $this->product_id
+            'id' => $this->Tag->id,
+            'name' => $this->Tag->name,
         ];
     }
 }

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('admin_id')->constrained('admins')->cascadeOnDelete();
             $table->string('name');
+            $table->integer('attribute_type');
             $table->timestamps();
             $table->softDeletes();
         });

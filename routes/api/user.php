@@ -1,9 +1,14 @@
 <?php
 
 use App\Http\Controllers\ContactUsController;
+
+use App\Http\Controllers\PasswordController;
+
 use App\Http\Controllers\ProductTagController;
 use App\Http\Controllers\RatingController;
+
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SocialController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use App\Models\ContactUs;
@@ -21,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/ShowSocial', [SocialController::class, 'ShowPlatforms']);
 Route::post('/signUp', [UserController::class, 'signUp']);
 Route::post('/login', [UserController::class, 'login']);
 Route::get('/user', [UserController::class, 'show_user']);
@@ -39,7 +45,9 @@ Route::get('/tags_with_productId', [ProductTagController::class, 'showWithProduc
 Route::middleware(['auth:User'])->group(function () {
     Route::post('/logout', [UserController::class, 'logout']);
     Route::post('/update_profile', [UserController::class, 'update']);
-    Route::post('/reset_password', [UserController::class, 'ResetPassword']);
+    Route::post('/change_password', [PasswordController::class, 'SelfChangePassword']);
+
 
     Route::post('/add_rating', [RatingController::class, 'create']);
 });
+

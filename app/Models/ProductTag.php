@@ -19,15 +19,19 @@ class ProductTag extends Model
         'product_id'
     ];
 
-    public function Tags(): BelongsTo
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
+    public function Tag(): BelongsTo
     {
         return $this->belongsTo(Tag::class, 'tag_id');
     }
 
     public function Product(): BelongsTo
     {
-        //changeWhenProductAdd change State to Product
-        return $this->belongsTo(State::class);
-        //
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

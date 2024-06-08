@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Category;
 
+use App\Models\BinderyAttributeOption;
+use App\Models\NormalAttributeOption;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -23,8 +25,35 @@ class AddCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => [Rule::unique('categories')->whereNull('deleted_at'),'required'],
+            'name' => [Rule::unique('categories')->whereNull('deleted_at'), 'required'],
             'image' => 'required|image',
+            // bindery Att Array
+            'bindery_att' => 'required|array',
+            'bindery_att.*.att_id' => [Rule::exists('bindery_attributes', 'id')
+                ->whereNull('deleted_at'), 'required', 'distinct'],
+            'bindery_att.*.att_options' => 'required|array',
+            'bindery_att.*.att_options.*' => [Rule::exists('bindery_attribute_options', 'id')
+                ->whereNull('deleted_at')
+                , 'required', 'distinct', function ($attribute, $value, $fail) {
+                    $currentAttId = (int)explode('.', $attribute)[1];
+                    $value = BinderyAttributeOption::find($value);
+                    if (!$value || $value->bindery_att_id != $this->bindery_att[$currentAttId]['att_id']) {
+                        $fail("Option Not Exists In Attribute");
+                    }
+                }],
+            // normal Att Array
+            'normal_att' => 'required|array',
+            'normal_att.*.att_id' => [Rule::exists('normal_attributes', 'id')
+                ->whereNull('deleted_at'), 'required', 'distinct'],
+            'normal_att.*.att_options' => 'required|array',
+            'normal_att.*.att_options.*' => [Rule::exists('normal_attribute_options', 'id')
+                ->whereNull('deleted_at'), 'required', 'distinct', function ($attribute, $value, $fail) {
+                $currentAttId = (int) explode('.', $attribute)[1];
+                $value = NormalAttributeOption::find($value);
+                if (!$value || $value->normal_att_id != $this->normal_att[$currentAttId]['att_id']) {
+                    $fail("Option Not Exists In Attribute");
+                }
+            }],
         ];
     }
 }

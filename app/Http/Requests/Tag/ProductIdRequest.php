@@ -24,7 +24,7 @@ class ProductIdRequest extends FormRequest
     {
         //changeWhenProductAdd change states to products
         return [
-            'productId' => [Rule::exists('states', 'id')->whereNull('deleted_at'), 'required'],
+            'productId' => [Rule::exists('products', 'id')->whereNull('deleted_at'), 'required'],
 
         ];
     }

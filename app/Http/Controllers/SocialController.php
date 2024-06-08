@@ -12,22 +12,19 @@ use App\Http\Requests\SocialPlatforms\AddSocialPlatformRequest;
 use App\Http\Requests\SocialPlatforms\EditSocialPlatformRequest;
 
 class SocialController extends Controller
-{  
-     
+{
+
 
     public function __construct(public PublicRepository $repository)
     {
     }
 
 
-    /**
-     * Display a listing of the resource.
-     */
+
     public function ShowPlatforms()
     {
         $platforms = $this->repository->ShowAll(Social::class, [])->get();
         return  \SuccessData(__('public.ShowSocial'), SocialPlatformsResource::collection($platforms)) ;
-
     }
 
     /**
@@ -40,7 +37,7 @@ class SocialController extends Controller
         $arr['icon'] = \uploadImage($arr['icon'], $path);
         $this->repository->create(Social::class,$arr);
         return \Success(__('public.AddSocial'));
-        
+
     }
 
     public function ShowById(SocialPlatformIdRequest $request)

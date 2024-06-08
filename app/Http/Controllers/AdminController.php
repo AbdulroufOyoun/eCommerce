@@ -134,4 +134,10 @@ class AdminController extends Controller
         return \Success(__('admin.admin_update'));
     }
 
+    public function ShowAllPermission()
+    {
+        $permissions = $this->repository->ShowAll(Permission::class, [])->get(['uuid', 'name']);
+        return \SuccessData(__('public.permission_found'), $permissions);
+    }
+
 }

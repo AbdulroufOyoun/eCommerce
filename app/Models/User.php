@@ -83,4 +83,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(ContactUs::class, 'user_id');
     }
+
+    public function Rates(): HasMany
+    {
+        return $this->hasMany(Rating::class, 'user_id');
+    }
 }

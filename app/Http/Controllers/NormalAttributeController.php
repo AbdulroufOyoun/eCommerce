@@ -18,7 +18,7 @@ class NormalAttributeController extends Controller
     }
 
     public function Create(AddNormalAttributeRequest $request){
-        $arr = Arr::only($request->validated(),['name']);
+        $arr = Arr::only($request->validated(),['name','attribute_type']);
         $this->repository->Create(NormalAttribute::class,$arr);
         return \Success(__('public.normal_att_add'));
     }
@@ -31,7 +31,7 @@ class NormalAttributeController extends Controller
     }
 
     public function Update(EditNormalAttributeRequest $request){
-        $arr = Arr::only($request->validated(),['normalAttId','name']);
+        $arr = Arr::only($request->validated(),['normalAttId','name','attribute_type']);
         $this->repository->Update(NormalAttribute::class,$arr['normalAttId'],$arr);
         return \Success(__('public.normal_att_update'));
     }

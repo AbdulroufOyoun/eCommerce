@@ -14,7 +14,7 @@ class SocialLinkesController extends Controller
 {
     public function __construct(public PublicRepository $repository)
     {
-        
+
     }
 
     /**
@@ -36,11 +36,10 @@ class SocialLinkesController extends Controller
     {
         $arr = Arr::only($request->validated(), ['link','SocialLinkId']);
         $this->repository->Update(SocialLinkes::class,$arr['SocialLinkId'],$arr);
-
         return \Success(__('public.SocialLink_updated'));
     }
 
-   
+
 
     /**
      * Remove the specified resource from storage.

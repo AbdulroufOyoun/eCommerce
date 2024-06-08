@@ -18,7 +18,7 @@ class BinderyAttributeController extends Controller
     }
 
     public function Create(AddBinderyAttributeRequest $request){
-    $arr = Arr::only($request->validated(),['name']);
+    $arr = Arr::only($request->validated(),['name','attribute_type']);
     $this->repository->Create(BinderyAttribute::class,$arr);
     return \Success(__('public.bindery_att_add'));
     }
@@ -31,7 +31,7 @@ class BinderyAttributeController extends Controller
     }
 
     public function Update(EditBinderyAttributeRequest $request){
-        $arr = Arr::only($request->validated(),['binderyAttId','name']);
+        $arr = Arr::only($request->validated(),['binderyAttId','name','attribute_type']);
         $this->repository->Update(BinderyAttribute::class,$arr['binderyAttId'],$arr);
         return \Success(__('public.bindery_att_update'));
     }
