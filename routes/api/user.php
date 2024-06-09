@@ -28,8 +28,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/ShowSocial', [SocialController::class, 'ShowPlatforms']);
 Route::post('/signUp', [UserController::class, 'signUp']);
+Route::post('/SignUpWithGoogle', [UserController::class, 'SignUpWithGoogle']);
 Route::post('/login', [UserController::class, 'login']);
 Route::get('/user', [UserController::class, 'show_user']);
+Route::post('/reset_password' ,[PasswordController::class,'SendEmail']);
+Route::post('/check' ,[PasswordController::class,'EmailCallback'])->name('change.password');
 
 
 Route::get('/show_aboutUs', [SettingController::class, 'ShowAboutUs']);
@@ -47,8 +50,6 @@ Route::middleware(['auth:User'])->group(function () {
     Route::post('/update_profile', [UserController::class, 'update']);
     Route::post('/change_password', [PasswordController::class, 'SelfChangePassword']);
     
-    Route::post('/reset_password' ,[PasswordController::class,'SendEmail']);
-    Route::post('/check' ,[PasswordController::class,'EmailCallback'])->name('change.password');
 
 
     Route::post('/add_rating', [RatingController::class, 'create']);

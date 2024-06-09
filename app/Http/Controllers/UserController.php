@@ -2,24 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\User;
+use App\Models\UserImage;
+use App\Models\UserAddress;
+use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
 use App\Enum\AccountTypeEnum;
-use App\Http\Requests\User\ResetPasswordRequest;
+use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Hash;
+use App\Repositories\PublicRepository;
 use App\Http\Requests\User\UserIdRequest;
+use App\Http\Resources\User\UserResource;
+use App\Http\Resources\Auth\LoginResource;
 use App\Http\Requests\User\UserLoginRequest;
 use App\Http\Requests\User\UserSignUpRequest;
 use App\Http\Requests\User\UserUpdateRequest;
-use App\Http\Resources\Auth\LoginResource;
 use App\Http\Resources\User\ShowUsersResource;
-use App\Http\Resources\User\UserResource;
-use App\Models\User;
-use App\Models\UserAddress;
-use App\Models\UserImage;
-use App\Repositories\PublicRepository;
-use App\Repositories\UserRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use App\Http\Requests\User\ResetPasswordRequest;
+use App\Http\Requests\User\SignUpWithGoogleRequest;
 
 
 class UserController extends Controller
@@ -52,6 +54,24 @@ class UserController extends Controller
         $user['token'] = $user->createToken('authToken', ['User'])->accessToken;
         return \SuccessData(__('auth.register'), new LoginResource($user));
     }
+
+    public function SignUpWithGoogle(SignUpWithGoogleRequest $request)
+    {
+        $arr = Arr::only($request->validated(),
+            ['google_id','display_name','email','password']);
+        $user = User::updateOrCreate(['email' => $arr['email']],
+                                    ['google_id' => $arr['google_id'],
+                                     'display_name' => $arr['display_name'],
+                                     'f_name' => $arr['display_name'],
+                                     'l_name' => $arr['display_name'],
+                                     'email' => $arr['email'],
+                                     'password' => $arr['password'],
+                                     'email_verified_at' => Carbon::now(),
+                                     ]);
+        $user['token'] = $user->createToken('authToken', ['User'])->accessToken;
+        return \SuccessData(__('auth.register'), new LoginResource($user));
+    }
+
 
 
     public function logout()

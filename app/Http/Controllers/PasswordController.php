@@ -19,6 +19,7 @@ use Illuminate\Validation\ValidationException;
 use App\Http\Requests\Password\ChangePasswordRequest;
 use App\Http\Requests\Password\ChangeAdminPasswordRequest;
 use App\Http\Requests\Password\PasswordEmailCallbackrequest;
+use App\Http\Requests\Password\ResetPasswordRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PasswordController extends Controller
@@ -54,25 +55,31 @@ class PasswordController extends Controller
 
     } 
 
-    public function SendEmail(){
+    public function SendEmail(ResetPasswordRequest $request){
 
-       
-        $user = \auth()->user();
-        $user =   $this->repository->ShowById(User::class, $user->id);
+        $email = Arr::only($request->validated(),['email']);
+
+        $where = [
+            ['email', '=', $email['email']] 
+        ];
+
+        $user = $this->repository->ShowAll(User::class, $where)->first();
         
-        $token = Str::random(60);
+        if($user){
+        
+            $token = Str::random(60);
 
-       PasswordResetToken::create([
-            'email' => $user->email,
-            'token' => $token, //Couldn't add Hash::make, i can't find a way to search for the hashed token in DB
-            'created_at' => Carbon::now(),
-            'user_id' => $user->id
-        ]);
+            PasswordResetToken::create([
+                'email' => $user->email,
+                'token' => $token, //Couldn't add Hash::make, i can't find a way to search for the hashed token in DB
+                'created_at' => Carbon::now(),
+                'user_id' => $user->id
+            ]);
 
-        Mail::to($user->email)->send(new PasswordResetMail($token,$user->email));
-        DeleteTokenJob::dispatch($user->email, $token)->delay(Carbon::now()->addMinutes(15));
+            Mail::to($user->email)->send(new PasswordResetMail($token,$user->email));
 
-        return \Success(__('passwords.ResetLinkSent'));
+            return \Success(__('passwords.ResetLinkSent'));
+        }
 
        
     }
@@ -83,13 +90,20 @@ class PasswordController extends Controller
         $where = [
             ['email', '=', $arr['email']] 
         ];
-        $attr = $this->repository->ShowAll(PasswordResetToken::class,$where)->latest()->first();
+
+        $attr = $this->repository->ShowAll(PasswordResetToken::class,$where)
+                                    ->where('created_at', '>', now()->subMinutes(15))
+                                    ->latest()->first();
         
         if (!$attr || $arr['token'] != $attr->token) {
             throw ValidationException::withMessages([__('passwords.Link_Expired')]);
         }
 
         $this->repository->ShowAll(PasswordResetToken::class,$where)->delete();
+     
+        $attr->user->update([
+            'email_verified_at' =>Carbon::now()
+        ]);
         return \Success(__('passwords.verification_completed')); 
     }
 

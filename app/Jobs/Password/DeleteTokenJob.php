@@ -32,11 +32,9 @@ class DeleteTokenJob implements ShouldQueue
      */
     public function handle(): void
     {     
-        Log::info("Job started for email: {$this->email}, token: {$this->token}");
         PasswordResetToken::where('email', $this->email)
                             ->where('token', $this->token)
                             ->delete();
-        Log::info("Deleted password reset tokens");
 
     }
 }
