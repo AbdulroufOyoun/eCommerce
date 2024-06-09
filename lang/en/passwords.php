@@ -18,5 +18,8 @@ return [
     'throttled' => 'Please wait before retrying.',
     'token' => 'This password reset token is invalid.',
     'user' => "We can't find a user with that email address.",
+    'Link_Expired' => "Reset password link expired, try again!",
+    'verification_completed' => "user verified successfully, he can reset his password",
+    'ResetLinkSent' => "Password reset link was send successfully",
 
 ];

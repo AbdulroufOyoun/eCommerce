@@ -12,8 +12,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\ContactUsController;
-
-
+use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\MaterialRecordController;
 use App\Http\Controllers\ProductTagController;
 use App\Http\Controllers\TagController;
 use Illuminate\Http\Request;
@@ -82,8 +82,6 @@ Route::delete('/delete_normal_att', [NormalAttributeController::class, 'Delete']
 Route::get('/show_permissions',[AdminController::class,'ShowAllPermission']);
 
 
-
-
 Route::group(['middleware' => ['auth:Admin', 'scope:Admin']], function () {
     Route::controller(AdminController::class)->group(function () {
         Route::post('/add_admin', 'Create');
@@ -142,6 +140,14 @@ Route::group(['middleware' => ['auth:Admin', 'scope:Admin']], function () {
     Route::post('/update_tag', [TagController::class, 'update']);
     Route::delete('/delete_product_tag', [ProductTagController::class, 'destroy']);
 
+
+    Route::post('/create_material', [MaterialController::class, 'create']);
+    Route::post('/update_material', [MaterialController::class, 'update']);
+    Route::get('/show_materials', [MaterialController::class, 'index']);
+    Route::get('/show_records_material', [MaterialController::class, 'show']);
+    Route::delete('/delete_material', [MaterialController::class, 'destroy']);
+
+    Route::post('/add_material_records', [MaterialRecordController::class, 'create']);
 
 
 });

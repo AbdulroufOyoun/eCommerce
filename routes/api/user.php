@@ -46,6 +46,9 @@ Route::middleware(['auth:User'])->group(function () {
     Route::post('/logout', [UserController::class, 'logout']);
     Route::post('/update_profile', [UserController::class, 'update']);
     Route::post('/change_password', [PasswordController::class, 'SelfChangePassword']);
+    
+    Route::post('/reset_password' ,[PasswordController::class,'SendEmail']);
+    Route::post('/check' ,[PasswordController::class,'EmailCallback'])->name('change.password');
 
 
     Route::post('/add_rating', [RatingController::class, 'create']);
