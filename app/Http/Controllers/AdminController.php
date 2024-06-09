@@ -51,9 +51,11 @@ class AdminController extends Controller
 
     public function Create(AdminCreateRequest $request)
     {
-        $arr = Arr::only($request->validated(), ['name', 'email', 'password']);
+        $arr = Arr::only($request->validated(), ['name', 'email', 'password','permissions']);
         $arr['created_by'] = \auth()->user()->id;
-        $this->repository->Create(Admin::class, $arr);
+        $admin = $this->repository->Create(Admin::class, $arr);
+        $permissionNames = Permission::whereIn('uuid', $arr['permissions'])->pluck('name')->toArray();
+        $admin->givePermissionTo($permissionNames);
         return \Success(__('auth.register'));
     }
 
