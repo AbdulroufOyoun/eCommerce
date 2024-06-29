@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\MaterialEnum;
 use App\Http\Requests\Material\MaterialIdRequest;
 use App\Http\Requests\Material\MaterialRecordsRequest;
 use App\Models\Material;
@@ -30,8 +31,14 @@ class MaterialRecordController extends Controller
             if ($material->exists()) {
                 $material = $material->first();
                 $arr['material_id'] = $material->id;
-                $this->publicRepository->Create(MaterialRecord::class, $arr);
-                $this->repository->ChangeQuantity($material, $arr);
+                $type = $arr['type'] == MaterialEnum::output;
+                $result = $material['current_quantity'] - $arr['quantity'];
+                if ($type && $result >= 0) {
+                    $this->publicRepository->Create(MaterialRecord::class, $arr);
+                    $this->repository->ChangeQuantity($material, $arr);
+                } else {
+                    array_push($notFoundMaterials, $arr);
+                };
             } else {
                 array_push($notFoundMaterials, $arr);
             };

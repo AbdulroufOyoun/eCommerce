@@ -60,14 +60,16 @@ class UserController extends Controller
         $arr = Arr::only($request->validated(),
             ['google_id','display_name','email','password']);
         $user = User::updateOrCreate(['email' => $arr['email']],
-                                    ['google_id' => $arr['google_id'],
-                                     'display_name' => $arr['display_name'],
-                                     'f_name' => $arr['display_name'],
-                                     'l_name' => $arr['display_name'],
-                                     'email' => $arr['email'],
-                                     'password' => $arr['password'],
-                                     'email_verified_at' => Carbon::now(),
-                                     ]);
+            [
+                'google_id' => $arr['google_id'],
+                'display_name' => $arr['display_name'],
+                'f_name' => $arr['display_name'],
+                'l_name' => $arr['display_name'],
+                'email' => $arr['email'],
+                'password' => $arr['password'],
+                'email_verified_at' => Carbon::now(),
+            ]
+        );
         $user['token'] = $user->createToken('authToken', ['User'])->accessToken;
         return \SuccessData(__('auth.register'), new LoginResource($user));
     }
